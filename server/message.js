@@ -7,14 +7,16 @@ messageRouter.post('/messages', (req, res, next) => {
     if (!body || !destination) {
         res.status(400).json("Missing key")
     }
-    if (typeof destination !== 'string' || typeof body !== 'string') {
+    else if (typeof destination !== 'string' || typeof body !== 'string') {
         res.status(400).json("Values must be strings")
-    } if (destination === '' || body === '') {
+    }
+    else if (destination === '' || body === '') {
         res.status(400).json("Missing value")
     }
-    if (destination !== '' && !destination.includes('@')) {
+    else if (!destination.includes('@')) {
         res.status(400).json("Destination needs to be an email")
-    } if (destination.length >= 103000 || body.length >= 103000) {
+    }
+    else if (destination.length >= 103000 || body.length >= 103000) {
         res.status(400).json('Payloads are too long')
     }
     else {
