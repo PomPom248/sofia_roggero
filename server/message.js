@@ -4,18 +4,19 @@ const messageFunction = require('./messageFunction')
 
 messageRouter.post('/messages', (req, res, next) => {
     const { destination, body } = req.body
-    if (typeof destination !== 'string' || typeof body !== 'string') {
-        // console.log('values must be strings')
-        res.status(500).json("Values must be strings")
-    } if (destination === '' || body === '') {
-        console.log('Missing value')
-        res.status(500).json("Missing value")
-    } if (destination !== '' && !destination.includes('@')) {
-        console.log('Destination needs to be an email')
-        res.status(500).json("Destination needs to be an email")
+    if (!body || !destination) {
+        res.status(400).json("Missing key")
     }
-    // } if () {
-    // }
+    if (typeof destination !== 'string' || typeof body !== 'string') {
+        res.status(400).json("Values must be strings")
+    } if (destination === '' || body === '') {
+        res.status(400).json("Missing value")
+    }
+    if (destination !== '' && !destination.includes('@')) {
+        res.status(400).json("Destination needs to be an email")
+    } if (destination.length >= 103000 || body.length >= 103000) {
+        res.status(400).json('Payloads are too long')
+    }
     else {
         messageFunction.sendMessage(destination, body)
             .then(() => {
