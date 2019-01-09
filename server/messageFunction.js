@@ -1,7 +1,7 @@
 const axios = require('axios')
 
 const axiosRoute = axios.create({
-    baseURL: "http://exercise-1_messageapp_1:3000"
+    baseURL: "http://sofia_roggero_messageapp_1:3000"
 })
 
 module.exports = {
