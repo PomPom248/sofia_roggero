@@ -1,7 +1,7 @@
 const express = require('express');
 const messageRouter = express.Router()
 const messageFunction = require('./messageFunction')
-
+const Message = require('./models/Message')
 const createMessage = require('./messageCreated')
 messageRouter.post('/messages', (req, res, next) => {
     const { destination, body } = req.body
@@ -30,6 +30,11 @@ messageRouter.post('/messages', (req, res, next) => {
                 res.status(500).json({ message: 'Error while creating the message' })
             })
     }
+})
 
+messageRouter.get('/messages', (req, res, next) => {
+    Message.find()
+        .then((messages) => res.status(200).json({ message: messages }))
+        .catch(err => res.status(500).json({ message: err }))
 })
 module.exports = messageRouter;
