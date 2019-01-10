@@ -2,8 +2,11 @@ const express = require('express');
 const messageRouter = express.Router()
 const messageFunction = require('./messageFunction')
 
+const createMessage = require('./messageCreated')
 messageRouter.post('/messages', (req, res, next) => {
     const { destination, body } = req.body
+    createMessage.createMessage(destination, body)
+
     if (destination == '' || body == '') {
         res.status(400).json("Missing value")
     } else if (!body || !destination) {
