@@ -1,12 +1,11 @@
 const express = require('express');
 const messageRouter = express.Router()
-const messageFunction = require('./messageFunction')
+const messageFunction = require('./messageCall')
+const createMessage = require('./createMessage')
 const Message = require('./models/Message')
-const createMessage = require('./messageCreated')
+
 messageRouter.post('/messages', (req, res, next) => {
     const { destination, body } = req.body
-    createMessage.create(destination, body)
-
     if (destination == '' || body == '') {
         res.status(400).json("Missing value")
     } else if (!body || !destination) {
@@ -24,17 +23,29 @@ messageRouter.post('/messages', (req, res, next) => {
     else {
         messageFunction.sendMessage(destination, body)
             .then(() => {
+                let status = 'OK - 200'
+                createMessage.create(destination, body, status, res)
                 res.status(200).json({ message: 'Message created' })
             })
-            .catch(() => {
-                res.status(500).json({ message: 'Error while creating the message' })
+            .catch((err) => {
+                if (err.response === undefined) {
+                    let status = 'TIMEOUT - 400'
+                    createMessage.create(destination, body, status, res)
+                    res.status(500).json({ message: 'Error due to timeout' })
+                } else {
+                    let status = 'NOT SENT - 500'
+                    createMessage.create(destination, body, status, res)
+                    res.status(500).json({ message: 'Connection lost' })
+                }
             })
     }
 })
 
 messageRouter.get('/messages', (req, res, next) => {
-    Message.find()
-        .then((messages) => res.status(200).json({ message: messages }))
-        .catch(err => res.status(500).json({ message: err }))
+    createMessage.find(res)
+})
+
+messageRouter.delete('/messages', (req, res, next) => {
+    createMessage.delete(res)
 })
 module.exports = messageRouter;
