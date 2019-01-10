@@ -21,3 +21,16 @@ To avoid theses mistskaes I created if clauses such as:
 If none of these things go wrong, then the payload is created.
 If nothing goes wrong then a 200 status and a 'Message created' message is sent
 If something goes wrong then a 400 status and a 'Error while creating the message' message is sent
+
+Two functions are used in this route:
+1) This function is called createMessage and it receives two parameters, destination and body. Its goal is to create new messages
+If everything goes well then a 200 status is sent
+If something goes wrong the a 500 status is sent 
+2) This function is called sendMessage and it receives two parameters, destination and body. Its goal is to make the request to axios.
+If nothing goes wrong then a 200 status and a 'Message created' message is sent
+If something goes wrong then a 400 status and a 'Error while creating the message' message is sent
+
+## GET - :9001/messages
+This route finds all the messages created.
+If everything goes right then a 200 status and all the created messages are sent. 
+If something goes wrong then a 500 status and an error message is sent.

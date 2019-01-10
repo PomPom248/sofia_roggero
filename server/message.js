@@ -5,7 +5,7 @@ const Message = require('./models/Message')
 const createMessage = require('./messageCreated')
 messageRouter.post('/messages', (req, res, next) => {
     const { destination, body } = req.body
-    createMessage.createMessage(destination, body)
+    createMessage.create(destination, body)
 
     if (destination == '' || body == '') {
         res.status(400).json("Missing value")
