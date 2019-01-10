@@ -23,12 +23,12 @@ If nothing goes wrong then a 200 status and a 'Message created' message is sent
 If something goes wrong then a 400 status and a 'Error while creating the message' message is sent
 
 Two functions are used in this route:
-1) This function is called create and it receives two parameters, destination and body. Its goal is to create new messages
-If everything goes well then a 200 status is sent
-If something goes wrong the a 500 status is sent 
-2) This function is called sendMessage and it receives two parameters, destination and body. Its goal is to make the request to axios.
-If nothing goes wrong then a 200 status and a 'Message created' message is sent
-If something goes wrong then a 400 status and a 'Error while creating the message' message is sent
+1) This function is called sendMessage and it receives two parameters, destination and body. There's an established timeout of 3seconds to limit the amout of time the function can dwell in the request. Its goal is to make the request to axios
+If the timeout is not exceeded, then the function enter into the then, a 200 status and a 'Message created' message is sent, and a message is created
+If the timeout is exceeded, then a 400 status and a 'Error while creating the message' message is sent and a message is created
+2) This function is called create and it three receives parameters, destination, body and status. Its goal is to create new messages
+If this function is invoked while in the then, then a message is created with a 'OK - 200' status
+If this function in invoked in the catch and the error response is undefined, then a message is created with a 'TIMEOUT - 400' status. Else, the message's status is 'NOT SENT - 500'.
 
 ## GET - :9001/messages
 This route finds all the messages created and it uses a function called find
