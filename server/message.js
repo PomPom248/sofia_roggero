@@ -1,6 +1,7 @@
 const express = require('express');
 const messageRouter = express.Router()
 const messageFunction = require('./messageFunction')
+const Message = require('./models/Message')
 
 messageRouter.post('/messages', (req, res, next) => {
     const { destination, body } = req.body
@@ -10,7 +11,6 @@ messageRouter.post('/messages', (req, res, next) => {
         res.status(400).json("Missing key")
     }
     else if (typeof destination !== 'string' || typeof body !== 'string') {
-        console.log(destination.length, body.length)
         res.status(400).json("Values must be strings")
     }
     else if (!destination.includes('@')) {
@@ -21,6 +21,7 @@ messageRouter.post('/messages', (req, res, next) => {
     }
     else {
         messageFunction.sendMessage(destination, body)
+        Message.save()
             .then(() => {
                 res.status(200).json({ message: 'Message created' })
             })
