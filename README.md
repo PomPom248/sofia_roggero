@@ -34,3 +34,11 @@ If this function in invoked in the catch and the error response is undefined, th
 This route finds all the messages created and it uses a function called find
 If everything goes right then a 200 status and all the created messages are sent. 
 If something goes wrong then a 500 status and an error message is sent.
+
+##QUESTIONS
+
+What happens if the message request gives an error?
+ - The message is created but the call never reaches the axios. If it were to fail, then the best thing would be to set a timeout, once it's exceeded then I would break the connection and retry to make the call again until the call is made. Or maybe it would be better to implement a system of piles where all the requests are lined up as they were made, and as they are being answered, to take those requests out of the line and if there are unanswered then to request them again.
+
+Are the errors in the sending of a message and in the query of the registry equally important?
+ - I think both errors are equally important as they interrupt the call's flow, however it depends on the application. It could be fixed with the proper use of then and catch, with the correct use of status codes and a message explaining why it failed (it's important to send different messages so not to confuse others).
