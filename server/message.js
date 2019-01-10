@@ -1,7 +1,6 @@
 const express = require('express');
 const messageRouter = express.Router()
 const messageFunction = require('./messageFunction')
-const Message = require('./models/Message')
 
 messageRouter.post('/messages', (req, res, next) => {
     const { destination, body } = req.body
@@ -21,7 +20,6 @@ messageRouter.post('/messages', (req, res, next) => {
     }
     else {
         messageFunction.sendMessage(destination, body)
-        Message.save()
             .then(() => {
                 res.status(200).json({ message: 'Message created' })
             })
