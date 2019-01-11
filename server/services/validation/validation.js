@@ -1,9 +1,9 @@
 
 const messageFunction = require('../axiosCall/messageCall')
-const createMessage = require('./messages/createMessage')
+const createMessage = require('../messages/createMessage')
 
 module.exports = {
-    validation(destination, body) {
+    validation(destination, body, res) {
         if (destination == '' || body == '') {
             res.status(400).json("Missing value")
         } else if (!body || !destination) {
@@ -19,7 +19,7 @@ module.exports = {
             res.status(400).json('Message is too long')
         }
         else {
-            messageFunction.sendMessage(destination, body)
+            messageFunction.sendMessage(destination, body, res)
                 .then(() => {
                     let status = 'OK - 200'
                     createMessage.create(destination, body, status, res)
