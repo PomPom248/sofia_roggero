@@ -1,12 +1,10 @@
-require('dotenv').config();
-
 const mongoose = require('mongoose')
 
 module.exports = {
-    datebaseConnection() {
+    datebaseConnection(dbURL) {
         setTimeout(function () {
             mongoose
-                .connect(process.env.MONGO_URL, { useNewUrlParser: true })
+                .connect(dbURL, { useNewUrlParser: true })
                 .then(x => {
                     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
                 })
