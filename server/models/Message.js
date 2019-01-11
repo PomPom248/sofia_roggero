@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const messageSchema = new Schema({
     destination: String,
     body: String,
-    status: { type: String, enum: ['OK - 200', 'NOT SENT - 500', 'TIMEOUT - 400'] }
+    status: { type: String, enum: ['OK - 200', 'ERROR - 500', 'TIMEOUT - 400'] }
 })
 
 const Message = mongoose.model("Message", messageSchema);

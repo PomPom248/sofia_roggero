@@ -28,11 +28,16 @@ If the timeout is not exceeded, then the function enter into the then, a 200 sta
 If the timeout is exceeded, then a 400 status and a 'Error while creating the message' message is sent and a message is created
 2) This function is called create and it three receives parameters, destination, body and status. Its goal is to create new messages
 If this function is invoked while in the then, then a message is created with a 'OK - 200' status
-If this function in invoked in the catch and the error response is undefined, then a message is created with a 'TIMEOUT - 400' status. Else, the message's status is 'NOT SENT - 500'.
+If this function in invoked in the catch and the error response is undefined, then a message is created with a 'TIMEOUT - 400' status. Else, the message's status is 'ERROR - 500'.
 
 ## GET - :9001/messages
-This route finds all the messages created and it uses a function called find
+This route finds all messages and it uses a function called find
 If everything goes right then a 200 status and all the created messages are sent. 
+If something goes wrong then a 500 status and an error message is sent.
+
+## DELETE - :9001/messages
+This route deletes all messages and it uses a function called delete
+If everything goes right then a 200 status and a 'Messages deleted' message. 
 If something goes wrong then a 500 status and an error message is sent.
 
 ##QUESTIONS

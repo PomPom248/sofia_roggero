@@ -1,8 +1,8 @@
 const express = require('express');
 const messageRouter = express.Router()
-const messageFunction = require('./messageCall')
-const createMessage = require('./createMessage')
-const Message = require('./models/Message')
+const messageFunction = require('../services/messageCall')
+const createMessage = require('../services/createMessage')
+const validation = require('../services/validation')
 
 messageRouter.post('/messages', (req, res, next) => {
     const { destination, body } = req.body
@@ -34,7 +34,7 @@ messageRouter.post('/messages', (req, res, next) => {
                     createMessage.create(destination, body, status, res)
                     res.status(500).json({ message: 'Error due to timeout' })
                 } else {
-                    let status = 'NOT SENT - 500'
+                    let status = 'ERROR - 500'
                     createMessage.create(destination, body, status, res)
                     res.status(500).json({ message: 'Connection lost' })
                 }

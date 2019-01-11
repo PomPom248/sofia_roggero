@@ -1,7 +1,8 @@
-const axios = require('axios')
+require('dotenv').config()
 
+const axios = require('axios')
 const axiosRoute = axios.create({
-    baseURL: "http://sofia_roggero_messageapp_1:3000"
+    baseURL: process.env.AXIOS_URL
 })
 
 module.exports = {
