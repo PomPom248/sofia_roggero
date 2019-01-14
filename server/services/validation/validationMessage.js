@@ -27,7 +27,7 @@ module.exports = {
                 .then(() => {
                     let status = 'OK - 200'
                     createMessage.create(destination, body, status, res)
-                    res.status(200).json({ message: 'Message created' })
+                    // res.status(200).json({ message: 'Message created' })
                 })
                 .catch((err) => {
                     if (err.response === undefined) {

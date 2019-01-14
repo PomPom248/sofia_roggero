@@ -22,13 +22,14 @@ If none of these things go wrong, then the payload is created.
 If nothing goes wrong then a 200 status and a 'Message created' message is sent
 If something goes wrong then a 400 status and a 'Error while creating the message' message is sent
 
-Two functions are used in this route:
+Three functions are used in this route:
 1) This function is called sendMessage and it receives two parameters, destination and body. There's an established timeout of 3seconds to limit the amout of time the function can dwell in the request. Its goal is to make the request to axios
 If the timeout is not exceeded, then the function enter into the then, a 200 status and a 'Message created' message is sent, and a message is created
 If the timeout is exceeded, then a 400 status and a 'Error while creating the message' message is sent and a message is created
 2) This function is called create and it three receives parameters, destination, body and status. Its goal is to create new messages
-If this function is invoked while in the then, then a message is created with a 'OK - 200' status
+If this function is invoked while in the then, then a message is created with a 'OK - 200' status. If the message is created correctly, then it decreases the credit amount by 1
 If this function in invoked in the catch and the error response is undefined, then a message is created with a 'TIMEOUT - 400' status. Else, the message's status is 'ERROR - 500'.
+
 
 ## GET - :9001/messages
 This route finds all messages and it uses a function called find
@@ -38,6 +39,22 @@ If something goes wrong then a 500 status and an error message is sent.
 ## DELETE - :9001/messages
 This route deletes all messages and it uses a function called delete
 If everything goes right then a 200 status and a 'Messages deleted' message. 
+If something goes wrong then a 500 status and an error message is sent.
+
+## POST - :9001/credit
+This route establishes or recharges credit, using one function called establish for the fisrt and recharge for the latter.
+The recharge function accepts one parameter, amount. And it's added to the existing amount. There's a lock/unlock event while recharging.
+If everything goes right then a 200 status and it sends a 'Credit re-established' message
+If something goes wrong then a 500 status and an error message is sent.
+
+## GET - :9001/credit
+This route gets the credit using a funtion called find
+If everything goes right then a 200 status and it sends all credits
+If something goes wrong then a 500 status and an error message is sent.
+
+## DELETE - :9001/credit
+This route deletes the credit using a function called delete
+If everything goes right then a 200 status and a 'Credits deleted' message. 
 If something goes wrong then a 500 status and an error message is sent.
 
 ##QUESTIONS
