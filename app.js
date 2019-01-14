@@ -6,7 +6,9 @@ const bodyParser = require('body-parser')
 const database = require('./server/database')
 
 app.use('/', (bodyParser.json()), require('./server/index'));
-database.datebaseConnection(process.env.MONGO_URL)
+// database.datebaseConnection(process.env.MONGO_URL)
+database.datebaseConnection(process.env.MONGO_LOCAL)
+//CAMBIAR ESA BASE DE DATOS DSP
 
 
 app.listen(process.env.PORT, () => { console.log(`listening to port ${process.env.PORT}`) })

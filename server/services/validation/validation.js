@@ -1,7 +1,6 @@
-
 const messageFunction = require('../axiosCall/messageCall')
 const createMessage = require('../messages/createMessage')
-const Credit = require('../../models/Credit')
+
 module.exports = {
     validation(destination, body, res, credit) {
 
@@ -31,7 +30,6 @@ module.exports = {
                     res.status(200).json({ message: 'Message created' })
                 })
                 .catch((err) => {
-                    // console.log(err)
                     if (err.response === undefined) {
                         let status = 'TIMEOUT - 400'
                         createMessage.create(destination, body, status, res)

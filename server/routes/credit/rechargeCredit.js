@@ -9,10 +9,8 @@ creditRouter.post('/', (req, res, next) => {
     Credit.find()
         .then(credit => {
             if (credit.length === 0) {
-                // console.log(amount)
                 establishCredit.establish(amount, res)
             } else {
-                // console.log(amount)
                 creditService.recharge(credit[0]._id, amount, res)
             }
         })

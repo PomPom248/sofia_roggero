@@ -10,6 +10,7 @@ messageRouter.post('/', (req, res, next) => {
         .then((credit) => {
             if (credit.length === 0) {
                 const amount = 10
+                console.log(amount)
                 establishCredit.establish(amount, res)
             } else {
                 validation.validation(destination, body, res, credit[0].amount)
