@@ -1,24 +1,36 @@
 const Credit = require('../../models/Credit')
-const createCredit = require('../../services/credit/establishCredit')
+var locks = require('locks');
+var mutex = locks.createMutex();
+
+
 module.exports = {
-    validation(amount, res) {
-        const newCredit = new Credit({ amount })
-        if (typeof amount !== 'number') {
+    recharge(id, amountCharge, res) {
+        if (amountCharge == '') {
+            res.status(400).json("Amount is missing")
+        }
+        else if (!amountCharge) {
+            res.status(400).json("Amount is required")
+        }
+        else if (typeof amountCharge != 'number') {
             res.status(400).json("Amount must be a number")
-        } else if (!amount) {
-            res.status(400).json("Amount cannot be missing")
-        }
-        else if (amount === '') {
-            res.status(400).json('Amount cannot be empty')
-        }
-        else {
-            newCredit.save()
-                .then((credit) => {
-                    res.status(200).json(`Credit of ${credit.amount}$ established`)
-                })
-                .catch((err) => {
-                    res.status(500).json('Error while establishing credit', err)
-                })
+        } else if (amountCharge < 1 || amountCharge > 500) {
+            res.status(400).json("Amount needs to be between 1 and 500")
+        } else {
+            mutex.lock(function () {
+                Credit.findByIdAndUpdate({ _id: id }, {
+                    $inc: {
+                        amount: amountCharge
+                    }
+                }, { new: true })
+                    .then(() => {
+                        mutex.unlock()
+                        res.status(200).json('Credit re-established')
+                    })
+                    .catch(err => {
+                        mutex.unlock()
+                        res.status(200).json(err)
+                    })
+            })
         }
     }
 }
