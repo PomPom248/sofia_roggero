@@ -7,7 +7,7 @@ const axiosRoute = axios.create({
 
 module.exports = {
     sendMessage(destination, body) {
-        return axiosRoute.post("/message", { destination, body }, { timeout: 3000 })
+        return axiosRoute.post("/message", { destination, body }, { timeout: 4000 })
     }
 }
 

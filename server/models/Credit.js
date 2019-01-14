@@ -2,8 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const creditSchema = new Schema({
-    globalCredit: Number,
-    remainingCredit: Number
+    amount: Number
 })
 
 const Credit = mongoose.model("Credit", creditSchema);
