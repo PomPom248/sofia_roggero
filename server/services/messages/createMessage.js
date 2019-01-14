@@ -5,14 +5,11 @@ module.exports = {
         Credit.find()
             .then(creditStatus => {
                 if (creditStatus[0].amount <= 0) {
-                    // console.log('no hya credito')
                     res.status(200).json("Not enough credit")
                 } else {
                     const newMessage = new Message({ destination, body, status })
                     newMessage.save()
                         .then(() => {
-                            // con
-                            // console.log(creditStatus, 'creditstaus')
                             Credit.findByIdAndUpdate({ _id: creditStatus[0]._id },
                                 { amount: creditStatus[0].amount - 1 }
                             )

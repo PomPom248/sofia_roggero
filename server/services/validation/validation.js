@@ -3,7 +3,8 @@ const messageFunction = require('../axiosCall/messageCall')
 const createMessage = require('../messages/createMessage')
 const Credit = require('../../models/Credit')
 module.exports = {
-    validation(destination, body, res) {
+    validation(destination, body, res, credit) {
+
         if (destination == '' || body == '') {
 
             res.status(400).json("Missing value")
@@ -19,6 +20,9 @@ module.exports = {
         else if (destination.length >= 100 || body.length >= 100) {
             res.status(400).json('Message is too long')
         }
+        else if (credit <= 0) {
+            res.status(400).json('No credit')
+        }
         else {
             messageFunction.sendMessage(destination, body, res)
                 .then(() => {
@@ -27,7 +31,6 @@ module.exports = {
                     res.status(200).json({ message: 'Message created' })
                 })
                 .catch((err) => {
-                    // console.log(err)
                     if (err.response === undefined) {
                         let status = 'TIMEOUT - 400'
                         createMessage.create(destination, body, status, res)
