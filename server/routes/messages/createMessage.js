@@ -3,7 +3,8 @@ const messageRouter = express.Router()
 const validation = require('../../services/validation/validation')
 const Credit = require('../../models/Credit')
 const establishCredit = require('../../services/credit/establishCredit')
-messageRouter.post('/messages', (req, res, next) => {
+
+messageRouter.post('/', (req, res, next) => {
     const { destination, body } = req.body
     Credit.find()
         .then((credit) => {

@@ -2,7 +2,7 @@ const express = require('express');
 const messageRouter = express.Router()
 const findMessage = require('../../services/messages/findMessage')
 
-messageRouter.get('/messages', (req, res, next) => {
+messageRouter.get('/', (req, res, next) => {
     findMessage.find(res)
 })
 

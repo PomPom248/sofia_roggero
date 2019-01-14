@@ -31,6 +31,7 @@ module.exports = {
                     res.status(200).json({ message: 'Message created' })
                 })
                 .catch((err) => {
+                    // console.log(err)
                     if (err.response === undefined) {
                         let status = 'TIMEOUT - 400'
                         createMessage.create(destination, body, status, res)
