@@ -1,10 +1,11 @@
 
 const messageFunction = require('../axiosCall/messageCall')
 const createMessage = require('../messages/createMessage')
-
+const Credit = require('../../models/Credit')
 module.exports = {
     validation(destination, body, res) {
         if (destination == '' || body == '') {
+
             res.status(400).json("Missing value")
         } else if (!body || !destination) {
             res.status(400).json("Missing key")

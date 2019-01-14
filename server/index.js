@@ -8,6 +8,8 @@ router.get('/', (req, res, next) => {
 router.use('/',
     require('./routes/messages/createMessage'),
     require('./routes/messages/deleteMessage'),
-    require('./routes/messages/findMessage'));
+    require('./routes/messages/findMessage'),
+    require('./routes/credit/establishCredit'),
+    require('./routes/credit/findCredit'));
 
 module.exports = router;
