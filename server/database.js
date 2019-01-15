@@ -1,8 +1,8 @@
 require('dotenv').config();
 
 const mongoose = require('mongoose')
-let connection1 = datebaseConnection(process.env.MONGO_LOCAL)
-let connection2 = datebaseConnection(process.env.MONGO_TWO)
+let connection1 = datebaseConnection(process.env.MONGO_URL)
+let connection2 = datebaseConnection(process.env.MONGO_URL_TWO)
 
 function datebaseConnection(dbURL) {
     return mongoose.createConnection(dbURL, { useNewUrlParser: true })
