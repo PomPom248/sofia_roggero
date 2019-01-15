@@ -11,7 +11,8 @@ creditRouter.post('/', (req, res, next) => {
             if (credit.length === 0) {
                 establishCredit.establish(amount, res)
             } else {
-                validation.recharge(credit[0]._id, amount, res)
+                validation.validate(credit[0]._id, amount, res)
+                // validation.recharge(credit[0]._id, amount, res)
             }
         })
         .catch(err => res.status(200).json(err))
