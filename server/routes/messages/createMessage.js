@@ -6,8 +6,10 @@ const establishCredit = require('../../services/credit/establishCredit')
 
 messageRouter.post('/', (req, res, next) => {
     const { destination, body } = req.body
-    Credit.find()
+    Credit('primary')
+        .find()
         .then((credit) => {
+            // console.log(credit)
             if (credit.length === 0) {
                 const amount = 10
                 establishCredit.establish(amount, res)

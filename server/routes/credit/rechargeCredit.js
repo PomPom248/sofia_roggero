@@ -6,7 +6,8 @@ const establishCredit = require('../../services/credit/establishCredit')
 
 creditRouter.post('/', (req, res, next) => {
     let { amount } = req.body
-    Credit.find()
+    Credit('primary')
+        .find()
         .then(credit => {
             if (credit.length === 0) {
                 establishCredit.establish(amount, res)

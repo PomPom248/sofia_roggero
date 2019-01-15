@@ -1,38 +1,34 @@
 const Message = require('../../models/Message')
 const Credit = require('../../models/Credit')
+
 var locks = require('locks');
 var mutex = locks.createMutex();
 
 module.exports = {
     create(destination, body, status, res) {
-        Credit.find()
+        Credit('primary')
+            .find()
             .then(creditStatus => {
                 if (creditStatus[0].amount <= 0) {
                     res.status(200).json("Not enough credit")
                 } else {
-                    const newMessage = new Message({ destination, body, status })
+                    const newMessage = Message('primary')
+                    var messagePrimary = new newMessage({ destination, body, status })
                     if (status.includes('200')) {
-                        newMessage.save()
+                        messagePrimary.save()
                             .then(() => {
                                 mutex.lock(function () {
-                                    Credit.findOneAndUpdate(
-                                        { amount: creditStatus[0].amount - 1 }
-                                    )
+                                    Credit('primary')
+                                        .findOneAndUpdate(
+                                            { amount: creditStatus[0].amount - 1 }
+                                        )
                                         .then((response) => {
-                                            console.log("OK")
-                                            console.log(response)
+                                            res.status(200).json({ Message: `Remaining ${response.amount}$` })
                                             mutex.unlock()
-                                            res.status(200)
-                                            res.send('mutex')
-                                            // .json({ Message: response })
                                         })
                                         .catch(err => {
-                                            console.log("error")
-                                            console.log(err)
+                                            res.status(500).json({ Message: err })
                                             mutex.unlock()
-                                            res.status(500)
-                                            res.send('no muyex')
-                                            // .json({ Message: err })
                                         })
                                 })
                             })
@@ -40,7 +36,7 @@ module.exports = {
                                 res.status(500).json('Error while creating message')
                             })
                     } else {
-                        newMessage.save()
+                        messagePrimary.save()
                             .then(response => res.status(200).json({ Message: response }))
                             .catch(err => res.status(500).json({ Message: err }))
                     }
