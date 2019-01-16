@@ -1,12 +1,13 @@
 const express = require('express');
 const messageRouter = express.Router()
 const validation = require('../../services/validation/validationMessage')
-const Credit = require('../../models/Credit')
+const creditCheck = require('../../models/Credit')
+// ccpm
 const establishCredit = require('../../services/credit/establishCredit')
-
+// Credit.creditCheck()
 messageRouter.post('/', (req, res, next) => {
     const { destination, body } = req.body
-    Credit('primary')
+    creditCheck()
         .find()
         .then((credit) => {
             // console.log(credit)

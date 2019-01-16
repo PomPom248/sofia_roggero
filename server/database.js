@@ -1,8 +1,8 @@
 require('dotenv').config();
 
 const mongoose = require('mongoose')
-let connection1 = datebaseConnection(process.env.MONGO_URL)
-let connection2 = datebaseConnection(process.env.MONGO_URL_TWO)
+let connection1 = datebaseConnection(process.env.MONGO_LOCAL)
+let connection2 = datebaseConnection(process.env.MONGO_TWO)
 
 function datebaseConnection(dbURL) {
     return mongoose.createConnection(dbURL, { useNewUrlParser: true })
@@ -32,11 +32,16 @@ function getConnection(db, connection1, connection2) {
     }
     return db
 }
-function getPrimary(primary) {
-    if (primary === "primary") {
-        return db.db1
-    } else {
-        return db.db2
+function getPrimary(key) {
+    if (key == undefined || key == 'primary') {
+        console.log(db.db1.database)
+        return db.db1.database
+    } else if(key == 'replica'){
+
+    }
+    else {
+        // console.log(db.db2, 'secondary')
+        return db.db2.database
     }
 }
 let db = {

@@ -2,7 +2,7 @@ require('dotenv').config()
 
 const axios = require('axios')
 const axiosRoute = axios.create({
-    baseURL: process.env.AXIOS_URL
+    baseURL: process.env.AXIOS_LOCAL
 })
 //CAMBIAR baseURL dsp pro la AXIOS_URL
 //URL local - AXIOS_LOCAL

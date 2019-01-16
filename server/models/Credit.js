@@ -7,9 +7,12 @@ const database = require('../database')
 const creditSchema = new Schema({
     amount: Number
 })
-module.exports = (primary) => {
-    database.getPrimary(primary).model('Credit', creditSchema)
-}
+
+module.exports = (key) => database.getPrimary(key).model('Credit', creditSchema)
+
+// module.exports = function creditCheck() {
+//     database.getPrimary().model('Credit', creditSchema)
+// }
 //FUNCIONA
 
 // const primaryConnection = mongoose.createConnection(process.env.MONGO_LOCAL)

@@ -1,12 +1,14 @@
 const express = require('express');
 const creditRouter = express.Router()
 const validation = require('../../services/validation/validationCredit')
-const Credit = require('../../models/Credit')
+// const Credit = require('../../models/Credit')
+const creditCheck = require('../../models/Credit')
 const establishCredit = require('../../services/credit/establishCredit')
 
 creditRouter.post('/', (req, res, next) => {
     let { amount } = req.body
-    Credit('primary')
+    // Credit.creditCheck('primary')
+    creditCheck()
         .find()
         .then(credit => {
             if (credit.length === 0) {

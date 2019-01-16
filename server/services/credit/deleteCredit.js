@@ -1,8 +1,9 @@
-const Credit = require('../../models/Credit')
+const creditCheck = require('../../models/Credit')
 
 module.exports = {
     delete(res) {
-        Credit.originalCredit.deleteMany()
+        creditCheck()
+            .deleteMany()
             .then(() => {
                 console.log('deleted 2')
                 res.status(200).json('Credits deleted')

@@ -1,24 +1,24 @@
 const Message = require('../../models/Message')
-const Credit = require('../../models/Credit')
+const creditCheck = require('../../models/Credit')
 
 var locks = require('locks');
 var mutex = locks.createMutex();
 
 module.exports = {
     create(destination, body, status, res) {
-        Credit('primary')
+        creditCheck()
             .find()
             .then(creditStatus => {
                 if (creditStatus[0].amount <= 0) {
                     res.status(200).json("Not enough credit")
                 } else {
-                    const newMessage = Message('primary')
+                    const newMessage = Message()
                     var messagePrimary = new newMessage({ destination, body, status })
                     if (status.includes('200')) {
                         messagePrimary.save()
                             .then(() => {
                                 mutex.lock(function () {
-                                    Credit('primary')
+                                    creditCheck()
                                         .findOneAndUpdate(
                                             { amount: creditStatus[0].amount - 1 }
                                         )

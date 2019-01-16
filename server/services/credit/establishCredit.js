@@ -1,8 +1,8 @@
-const Credit = require('../../models/Credit')
+const creditCheck = require('../../models/Credit')
 
 module.exports = {
     establish(amount, res) {
-        const newCredit = Credit('primary')
+        const newCredit = creditCheck()
         var creditPrimary = new newCredit({ amount })
         creditPrimary.save()
             .then((credit) => {

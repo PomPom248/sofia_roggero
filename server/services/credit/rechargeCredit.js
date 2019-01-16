@@ -1,4 +1,4 @@
-const Credit = require('../../models/Credit')
+const creditCheck = require('../../models/Credit')
 var locks = require('locks');
 var mutex = locks.createMutex();
 
@@ -6,7 +6,7 @@ var mutex = locks.createMutex();
 module.exports = {
     recharge(id, amountCharge, res) {
         mutex.lock(function () {
-            Credit('primary')
+            creditCheck()
                 .findByIdAndUpdate({ _id: id }, {
                     $inc: {
                         amount: amountCharge
