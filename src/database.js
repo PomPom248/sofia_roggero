@@ -17,6 +17,7 @@ function createConnection(name, server, database) {
       useNewUrlParser: true,
       autoReconnect: true,
       connectTimeoutMS: 30000,
+      // connectTimeoutMS: 1000,
       reconnectInterval: 500,
       reconnectTries: Number.MAX_VALUE
     })
@@ -41,7 +42,7 @@ function setupConnection(connection, backup) {
 
 let connections = [{}, {}];
 
-setTimeout(function() {
+setTimeout(function () {
   connections = [
     createConnection("PRIMARY", servers.primary, database),
     createConnection("REPLICA", servers.replica, database)
@@ -56,7 +57,7 @@ setTimeout(function() {
 }, 30000);
 
 module.exports = {
-  get: function(dbKey) {
+  get: function (dbKey) {
     let conn;
     if (dbKey == undefined || dbKey == "primary") {
       conn = connections.find(connection => connection.isPrimary == true);
@@ -71,7 +72,7 @@ module.exports = {
     return conn.conn;
   },
 
-  isReplicaOn: function() {
+  isReplicaOn: function () {
     replicaOn = connections[0].isActive && connections[1].isActive;
     console.log(`Replica is ${replicaOn ? "ON" : "OFF"}`);
     return replicaOn;

@@ -4,8 +4,10 @@ const database = require("../database");
 let messageSchema = new mongoose.Schema({
   destination: String,
   body: String,
+  msj_id: { type: String, unique: true },
+  response_msj: { type: String },
   location: {
-  	name: {
+    name: {
       type: String,
       default: "Default"
     },

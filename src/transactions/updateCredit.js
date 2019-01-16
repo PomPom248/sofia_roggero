@@ -1,7 +1,7 @@
 const database = require("../database");
 const Credit = require("../models/credit");
 const { cleanClone } = require("../utils");
-const mutex = require("../mutex");
+// const mutex = require("../mutex");
 
 function updateCredit(creditModel, conditions, newValue) {
   return creditModel.findOneAndUpdate(conditions, newValue, {
@@ -53,31 +53,31 @@ function updateCreditTransaction(conditions, newValue) {
     });
 }
 
-module.exports = function(conditions, newValue, cb) {
+module.exports = function (conditions, newValue, cb) {
   if (database.isReplicaOn()) {
-    mutex.lock(function() {
-      updateCreditTransaction(conditions, newValue)
+    // mutex.lock(function() {
+    updateCreditTransaction(conditions, newValue)
       .then(doc => {
-        mutex.unlock();
+        // mutex.unlock();
         cb(doc);
       })
       .catch(err => {
-        mutex.unlock();
+        // mutex.unlock();
         cb(undefined, err);
       });
-    })
+    // })
   } else {
-    mutex.lock(function() {
-      updateCredit(Credit(), conditions, newValue)
+    // mutex.lock(function() {
+    updateCredit(Credit(), conditions, newValue)
       .then(doc => {
         console.log("Credit updated successfully", doc);
-        mutex.unlock();
+        // mutex.unlock();
         cb(doc);
       })
       .catch(err => {
-        mutex.unlock();
+        // mutex.unlock();
         cb(undefined, err);
       });
-    });
+    // });
   }
 };
