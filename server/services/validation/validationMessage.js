@@ -25,16 +25,16 @@ module.exports = {
         else {
             messageFunction.sendMessage(destination, body, res)
                 .then(() => {
-                    let status = 'OK - 200'
-                    createMessage.create(destination, body, status, res)
+                    let statusCode = 'OK - 200'
+                    createMessage.create(destination, body, statusCode, res)
                 })
                 .catch((err) => {
                     if (err.response === undefined) {
-                        let status = 'TIMEOUT - 400'
-                        createMessage.create(destination, body, status, res)
+                        let statusCode = 'TIMEOUT - 400'
+                        createMessage.create(destination, body, statusCode, res)
                     } else {
-                        let status = 'ERROR - 500'
-                        createMessage.create(destination, body, status, res)
+                        let statusCode = 'ERROR - 500'
+                        createMessage.create(destination, body, statusCode, res)
                     }
                 })
         }

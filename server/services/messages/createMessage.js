@@ -1,18 +1,21 @@
 const Message = require('../../models/Message')
 const creditCheck = require('../../models/Credit')
+const uuidv1 = require('uuid/v1')
+
 
 module.exports = {
-    create(destination, body, status, res) {
+    create(destination, body, statusCode, res) {
         creditCheck()
             .find()
             .then(creditStatus => {
                 if (creditStatus[0].amount <= 0) {
                     res.status(200).json("Not enough credit")
                 } else {
-                    console.log('1er base de datos')
+                    let msjID = uuidv1()
                     const newMessage = Message()
-                    var messagePrimary = new newMessage({ destination, body, status })
-                    if (status.includes('200')) {
+                    var messagePrimary = new newMessage({ msjID, destination, body, statusCode })
+                    console.log(messagePrimary)
+                    if (statusCode.includes('200')) {
                         messagePrimary.save()
                             .then(() => {
                                 creditCheck()
@@ -28,8 +31,9 @@ module.exports = {
                             })
                             .then(() => {
                                 const newMessageCopy = Message('replica')
-                                var messageCopy = newMessageCopy({ destination, body, status })
-                                if (status.includes('200')) {
+                                var messageCopy = newMessageCopy({ msjID, destination, body, statusCode })
+                                console.log(messageCopy)
+                                if (statusCode.includes('200')) {
                                     return messageCopy.save()
                                         .then(() => {
                                             creditCheck('replica')
@@ -51,9 +55,9 @@ module.exports = {
                     } else {
                         messagePrimary.save()
                             .then(() => {
-                                console.log('2nd database')
                                 const newMessageCopy = Message('replica')
-                                var messageCopy = newMessageCopy({ destination, body, status })
+                                var messageCopy = newMessageCopy({ msjID, destination, body, statusCode })
+                                console.log(messageCopy)
                                 messageCopy.save()
                                     .then(() => res.status(200).send('Message saved in both dbs'))
                                     .catch(() => res.status(500).send('messge saved in 1st dbs'))
