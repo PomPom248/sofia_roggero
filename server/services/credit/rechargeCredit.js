@@ -1,25 +1,22 @@
 const creditCheck = require('../../models/Credit')
-var locks = require('locks');
-var mutex = locks.createMutex();
-
 
 module.exports = {
-    recharge(id, amountCharge, res) {
-        mutex.lock(function () {
-            creditCheck()
-                .findByIdAndUpdate({ _id: id }, {
-                    $inc: {
-                        amount: amountCharge
-                    }
-                }, { new: true })
-                .then(() => {
-                    mutex.unlock()
-                    res.status(200).json('Credit re-established')
-                })
-                .catch(err => {
-                    mutex.unlock()
-                    res.status(200).json(err)
-                })
-        })
+    recharge(amountCharge, res) {
+        creditCheck()
+            .findOneAndUpdate({ $inc: { amount: amountCharge } })
+            .then(() => {
+                return creditCheck('replica')
+                    .findOneAndUpdate({ $inc: { amount: amountCharge } })
+                    .then(() => {
+                        res.status(200).json(`${amountCharge}$ re-established in both dbs`)
+                    })
+                    .catch((err) => {
+                        res.status(500).json(err)
+                    })
+            })
+            .catch(err => {
+                console.log('chau', err)
+                res.status(200).json(err)
+            })
     }
 }

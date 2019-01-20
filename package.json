@@ -12,7 +12,9 @@
     "body-parser": "^1.18.3",
     "mongoose": "^5.3.6",
     "dotenv": "^6.0.0",
-    "locks": "^0.2.2"
+    "locks": "^0.2.2",
+    "bull": "^3.5.2",
+    "uuid": "^3.3.2"
   },
   "repository": {
     "type": "git",

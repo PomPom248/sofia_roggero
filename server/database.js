@@ -7,7 +7,7 @@ function datebaseConnection(name, dbURL) {
         name,
         primary: false,
         connected: true,
-        conn: mongoose.createConnection(dbURL, {
+        conenectionURL: mongoose.createConnection(dbURL, {
             useNewUrlParser: true,
             autoReconnect: true
         })
@@ -15,7 +15,7 @@ function datebaseConnection(name, dbURL) {
 }
 
 function setupConnection(connection, backup) {
-    connection.conn.on('disconnected', () => {
+    connection.conenectionURL.on('disconnected', () => {
         console.log('db down', connection.name)
         connection.primary = false;
         if (connection.primary) {
@@ -23,7 +23,7 @@ function setupConnection(connection, backup) {
             backup.primary = backup.connected
         }
     })
-    connection.conn.on('reconnected', () => {
+    connection.conenectionURL.on('reconnected', () => {
         console.log('db up', connection.name)
         connection.connected = true;
         connection.primary = !backup.isPrimary;
@@ -51,8 +51,7 @@ module.exports = {
             console.log("Found:", conn.name);
         }
         debugger;
-        return conn.conn;
-        console.log('hola')
+        return conn.conenectionURL;
     },
     isReplicaOn() {
         replicaOn = connections[0].connected && connections[1].connected;
@@ -60,67 +59,4 @@ module.exports = {
         return replicaOn;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function getConnection(db, connection1, connection2) {
-//     if (connection1.on('connected', () => { })) {
-//         db.db1.primary = true;
-//         db.db1.connected = true;
-//         db.db2.primary = false;
-//     } else if (connection1.on("disconnected", () => { })) {
-//         db.db1.primary = false;
-//         db.db1.connected = false;
-//         db.db2.primary = true;
-//     } else if (connection1.on('reconnect', () => { })) {
-//         db.db1.primary = false;
-//         db.db1.connected = true;
-//         // db.db2.primary = true;
-//     } else if (connection2.on("disconnected", () => { })) {
-//         db.db1.primary = true;
-//         db.db2.connected = false;
-//     } else if (connection2.on('reconnect', () => { })) {
-//         db.db2.connected = true;
-//     } else {
-//         db.db1.primary = true;
-//         db.db2.connected = true;
-//     }
-//     return db
-// }
-// function getPrimary(key) {
-//     if (key == undefined || key == 'primary') {
-//         console.log(db.db1.database)
-//         return db.db1.database
-//     } else if (key == 'replica') {
-
-//     }
-//     else {
-//         // console.log(db.db2, 'secondary')
-//         return db.db2.database
-//     }
-// }
-// let db = {
-//     db1: {
-//         primary: true,
-//         connected: true,
-//         database: connection1
-//     },
-//     db2: {
-//         primary: false,
-//         connected: true,
-//         database: connection2
-//     }
-// }
-// getConnection(db, connection1, connection2)
 

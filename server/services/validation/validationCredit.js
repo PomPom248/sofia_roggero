@@ -1,7 +1,7 @@
 var rechargeCredit = require('../credit/rechargeCredit')
 
 module.exports = {
-    validate(id, amountCharge, res) {
+    validate(amountCharge, res) {
         if (amountCharge == '') {
             res.status(400).json("Amount is missing")
         }
@@ -13,7 +13,7 @@ module.exports = {
         } else if (amountCharge < 1 || amountCharge > 500) {
             res.status(400).json("Amount needs to be between 1 and 500")
         } else {
-            rechargeCredit.recharge(id, amountCharge, res)
+            rechargeCredit.recharge(amountCharge, res)
         }
     }
 }

@@ -27,17 +27,14 @@ module.exports = {
                 .then(() => {
                     let status = 'OK - 200'
                     createMessage.create(destination, body, status, res)
-                    // res.status(200).json({ message: 'Message created' })
                 })
                 .catch((err) => {
                     if (err.response === undefined) {
                         let status = 'TIMEOUT - 400'
                         createMessage.create(destination, body, status, res)
-                        res.status(500).json({ message: 'Error due to timeout' })
                     } else {
                         let status = 'ERROR - 500'
                         createMessage.create(destination, body, status, res)
-                        res.status(500).json({ message: 'Connection lost' })
                     }
                 })
         }
