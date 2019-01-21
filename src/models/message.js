@@ -4,8 +4,7 @@ const database = require("../database");
 let messageSchema = new mongoose.Schema({
   destination: String,
   body: String,
-  msj_id: { type: String, unique: true },
-  response_msj: { type: String },
+  // msjID: { type: String, default: 'Default' },
   location: {
     name: {
       type: String,
@@ -18,7 +17,7 @@ let messageSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["ERROR", "OK", "TIMEOUT"]
+    enum: ["ERROR", "OK", "TIMEOUT", "PENDING"]
   }
 });
 

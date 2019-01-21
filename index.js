@@ -1,5 +1,6 @@
 const http = require("http");
 const express = require("express");
+const messageQueue = require('./src/queues')
 
 const bodyParser = require("body-parser");
 const {
@@ -54,7 +55,7 @@ app.post(
   "/messages",
   bodyParser.json(),
   validate({ body: messageSchema }),
-  sendMessage
+  messageQueue
 );
 
 app.post(
@@ -66,7 +67,7 @@ app.post(
 
 app.get("/messages", getMessages);
 
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   console.log(res.body);
   if (err instanceof ValidationError) {
     res.sendStatus(400);
@@ -75,6 +76,6 @@ app.use(function(err, req, res, next) {
   }
 });
 
-app.listen(9005, function() {
+app.listen(9005, function () {
   console.log("App started on PORT 9005");
 });
