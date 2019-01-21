@@ -18,10 +18,10 @@ function startJob(req, res) {
     const { destination, body } = req.body
     const msjID = uuidv1()
     const statusCode = 'PENDING'
-    sendMessage.create(msjID, destination, body, statusCode, res)
+    sendMessage.create( destination, body, statusCode, res)
 
-    messageQueue.add({ msjID, destination, body, statusCode, res })
-    res.send(`Your message is on queue with id: ${msjID}`);
+    messageQueue.add({ destination, body, statusCode, res })
+    res.send(`Your message is on queue with id: $`);
 }
 
 module.exports = messageQueue
