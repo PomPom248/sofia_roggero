@@ -8,9 +8,9 @@ const {
   ValidationError
 } = require("express-json-validator-middleware");
 
-const sendMessage = require("./src/controllers/sendMessage");
 const getMessages = require("./src/controllers/getMessages");
 const updateCredit = require("./src/controllers/updateCredit");
+const getStatusMessage = require('./src/controllers/getStatusMessage')
 
 const app = express();
 
@@ -64,8 +64,9 @@ app.post(
   validate({ body: creditSchema }),
   updateCredit
 );
-
 app.get("/messages", getMessages);
+
+app.get('/messages/:msjID/status', bodyParser.json(), getStatusMessage)
 
 app.use(function (err, req, res, next) {
   console.log(res.body);
