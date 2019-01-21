@@ -1,6 +1,7 @@
 const Queue = require('bull');
 const messageQueue = new Queue('message-queues', 'redis://127.0.0.1:6379');
 const sendMessage = require('./controllers/sendMessage')
+const uuidv1 = require('uuid/v1')
 
 messageQueue.on('completed', function (job, result) {
     console.log(`Job completed with result ${result}`);
@@ -14,13 +15,11 @@ messageQueue.on('failed', function (job, result) {
 })
 
 messageQueue.process(function (job, done) {
-    sendMessage(job.data, res)
-        .then(() => done())
-        .catch(() => done())
+    // console.log('in process before')
+    sendMessage(job.data, done)
 })
-
 const addQueue = (req, res) => {
-    const uuidv1 = require('uuid/v1')
+
     const msjID = uuidv1()
 
     let job = {
@@ -29,7 +28,7 @@ const addQueue = (req, res) => {
         destination: req.body.destination,
         status: "PENDING"
     }
-    console.log(job, 'job in addqueue')
+    // console.log(job, 'job in addqueue')
 
     messageQueue.add(job)
         .then(() => res.send(`Message sent with this id: ${job.msjID}`))

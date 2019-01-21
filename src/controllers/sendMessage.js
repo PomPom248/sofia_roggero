@@ -4,12 +4,10 @@ const getCredit = require("../clients/getCredit")
 
 // const random = n => Math.floor(Math.random() * Math.floor(n));
 
-module.exports = function (req, res) {
-  // console.log(body, 'body')
-  console.log('en sendMessage')
+module.exports = function (req, done) {
+
   const body = JSON.stringify(req.body);
-  console.log(body)
-  console.log(req)
+
   var query = getCredit();
   query.exec(function (err, credit) {
 
@@ -33,39 +31,32 @@ module.exports = function (req, res) {
       };
 
       let postReq = http.request(postOptions);
-
       postReq.on("response", postRes => {
-        console.log('en la respuesta del 200')
         if (postRes.statusCode === 200) {
+          console.log(req)
           saveMessage(
             {
-              ...req.body,
+              ...req,
               status: "OK"
             },
             function (_result, error) {
-              console.log('en el cb del 200')
               if (error) {
-                res.statusCode = 500;
-                res.end(error);
+                done
               } else {
-                res.end(postRes.body);
+                done
               }
             }
           );
         } else {
           console.error("Error while sending message");
-
+          console.log(req)
           saveMessage(
             {
-              ...req.body,
+              ...req,
               status: "ERROR"
             },
-            () => {
-              console.log('en el cb del 500')
-              res.statusCode = 500;
-              res.end("Internal server error: SERVICE ERROR");
-            }
-          );
+            done
+          )
         }
       });
 
@@ -74,17 +65,13 @@ module.exports = function (req, res) {
       postReq.on("timeout", () => {
         console.error("Timeout Exceeded!");
         postReq.abort();
-
+        console.log(req)
         saveMessage(
           {
-            ...req.body,
+            ...req,
             status: "TIMEOUT"
           },
-          () => {
-            console.log('en el cb del timeout')
-            res.statusCode = 500;
-            res.end("Internal server error: TIMEOUT");
-          }
+          done
         )
       });
 
@@ -93,8 +80,7 @@ module.exports = function (req, res) {
       postReq.write(body);
       postReq.end();
     } else {
-      res.statusCode = 500;
-      res.end("No credit error");
+      // done()
     }
   });
 }

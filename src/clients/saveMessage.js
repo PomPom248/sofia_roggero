@@ -2,9 +2,11 @@ const Message = require("../models/message");
 const updateCreditTransaction = require("../transactions/updateCredit");
 const saveMessageTransaction = require("../transactions/saveMessage");
 
-module.exports = function(messageParams, cb) {
+module.exports = function (messageParams, cb) {
+  console.log('en savemessage')
   const MessageModel = Message();
   let message = new MessageModel(messageParams);
+  console.log(messageParams, 'messageParams');
 
   if (message.status == "OK") {
     updateCreditTransaction(
@@ -15,12 +17,12 @@ module.exports = function(messageParams, cb) {
       {
         $inc: { amount: -message.location.cost }
       },
-      function(doc, error) {
+      function (doc, error) {
         if (error) {
           return cb(undefined, error);
         } else if (doc == undefined) {
           let error = "Not enough credit";
-          console.log(error);
+          console.log(error, 'chau');
           cb(undefined, error);
         } else {
           saveMessageTransaction(messageParams, cb);
@@ -28,6 +30,6 @@ module.exports = function(messageParams, cb) {
       }
     );
   } else {
-    cb();
+    saveMessageTransaction(messageParams, cb);
   }
 };

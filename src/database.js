@@ -16,8 +16,8 @@ function createConnection(name, server, database) {
     conn: mongoose.createConnection(`mongodb://${server}/${database}`, {
       useNewUrlParser: true,
       autoReconnect: true,
-      connectTimeoutMS: 30000,
-      // connectTimeoutMS: 1000,
+      // connectTimeoutMS: 30000,
+      connectTimeoutMS: 1000,
       reconnectInterval: 500,
       reconnectTries: Number.MAX_VALUE
     })
