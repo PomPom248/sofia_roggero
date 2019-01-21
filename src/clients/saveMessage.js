@@ -6,7 +6,7 @@ module.exports = function (messageParams, cb) {
   console.log('en savemessage')
   const MessageModel = Message();
   let message = new MessageModel(messageParams);
-  console.log(messageParams, 'messageParams');
+  // console.log(messageParams, 'messageParams');
 
   if (message.status == "OK") {
     updateCreditTransaction(

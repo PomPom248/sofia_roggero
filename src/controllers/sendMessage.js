@@ -80,7 +80,7 @@ module.exports = function (req, done) {
       postReq.write(body);
       postReq.end();
     } else {
-      // done()
+      done
     }
   });
 }

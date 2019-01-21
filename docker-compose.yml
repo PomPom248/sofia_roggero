@@ -5,8 +5,8 @@ services:
     ports:
       - "9005:9005"
     links:
-      - mongodb
       - replica
+      - mongodb
   messageapp:
     image: cabify/backend-bootcamp-messageapp
     ports:

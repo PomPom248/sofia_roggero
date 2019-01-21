@@ -29,7 +29,6 @@ const addQueue = (req, res) => {
         status: "PENDING"
     }
     // console.log(job, 'job in addqueue')
-
     messageQueue.add(job)
         .then(() => res.send(`Message sent with this id: ${job.msjID}`))
         .catch(() => res.send(`Problem sending message`))

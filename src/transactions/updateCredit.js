@@ -1,7 +1,7 @@
 const database = require("../database");
 const Credit = require("../models/credit");
 const { cleanClone } = require("../utils");
-// const mutex = require("../mutex");
+const mutex = require("../mutex");
 
 function updateCredit(creditModel, conditions, newValue) {
   return creditModel.findOneAndUpdate(conditions, newValue, {

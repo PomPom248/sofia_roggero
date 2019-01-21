@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
 const servers = {
-  // primary: "exercise5_mongodb_1:27017",
-  // replica: "exercise5_replica_1:27017"
-  primary: "localhost:27017",
-  replica: "localhost:27018"
+  primary: "exercise5_mongodb_1:27017",
+  replica: "exercise5_replica_1:27017"
+  // primary: "localhost:27017",
+  // replica: "localhost:27018"
 };
 const database = "cabify_bootcamp";
 

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const database = require("../database");
 
+
 let messageSchema = new mongoose.Schema({
   destination: String,
   body: String,

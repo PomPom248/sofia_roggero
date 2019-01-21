@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const database = require("../database");
 
+
 let creditSchema = new mongoose.Schema({
   location: {
     type: String,
